@@ -130,7 +130,7 @@ TARGET_KEYMASTER_WAIT_FOR_QSEE := true
 #TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor
 #TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
 #TW_CRYPTO_USE_SYSTEM_VOLD := qseecomd
-TARGET_CRYPTFS_HW_PATH := vendor/cryptfs_hw
+TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
 TWRP_INCLUDE_LOGCAT := true
 
 # Extras
