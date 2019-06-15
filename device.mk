@@ -36,9 +36,9 @@ PRODUCT_PACKAGES += \
     android.hardware.boot@1.0-service \
     hwservicemanager
     
-# cryptfs_hw can't be build using minimal-manifest twrp so using a prebuilt one
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/root/sbin/libcryptfs_hw.so:vendor/lib64/libcryptfs_hw.so
+# cryptfs_hw has its own source
+#PRODUCT_COPY_FILES += \
+#    $(LOCAL_PATH)/recovery/root/sbin/libcryptfs_hw.so:vendor/lib64/libcryptfs_hw.so
 
 
 
