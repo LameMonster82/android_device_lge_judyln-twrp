@@ -4,8 +4,8 @@
 /system_image	emmc	/dev/block/bootdevice/by-name/system					flags=slotselect
 /vendor		ext4	/dev/block/bootdevice/by-name/vendor					flags=slotselect;display="Vendor";backup=1
 /vendor_image	emmc	/dev/block/bootdevice/by-name/vendor					flags=slotselect
-/data		ext4	/dev/block/bootdevice/by-name/userdata					flags=encryptable=/dev/block/bootdevice/by-name/encrypt
-/firmware	vfat	/dev/block/bootdevice/by-name/modem					flags=slotselect;display="Firmware";mounttodecrypt;fsflags=ro
+/data		ext4	/dev/block/bootdevice/by-name/userdata					flags=encryptable=/dev/block/bootdevice/by-name/encrypt;fsflags=discard;display="Userdata"
+/firmware	vfat	/dev/block/bootdevice/by-name/modem					flags=slotselect;display="Firmware";mounttodecrypt;fsflags=context=u:object_r:firmware_file:s0
 /misc		emmc	/dev/block/bootdevice/by-name/misc
 /modem		emmc	/dev/block/bootdevice/by-name/modem					flags=slotselect;backup=1;display="Modem"
 /bluetooth	emmc	/dev/block/bootdevice/by-name/bluetooth					flags=slotselect;backup=1;subpartitionof=/modem
@@ -14,7 +14,9 @@
 /efs2		emmc	/dev/block/bootdevice/by-name/modemst2					flags=backup=1;subpartitionof=/efs1
 /efsc		emmc	/dev/block/bootdevice/by-name/fsc					flags=backup=1;subpartitionof=/efs1
 /efsg		emmc	/dev/block/bootdevice/by-name/fsg					flags=backup=1;subpartitionof=/efs1
-/encrypt		raw	/dev/block/bootdevice/by-name/encrypt
+/oem		ext4	/dev/block/bootdevice/by-name/oem					flags=slotselect;backup=1;display="OEM"
+/OP		ext4	/dev/block/bootdevice/by-name/OP					flags=slotselect;backup=1;subpartitionof=/oem;display="OP"
+/encrypt	emmc	/dev/block/bootdevice/by-name/encrypt
 
 # Removable storage
 /usbstorage      vfat    /dev/block/sdg1                            /dev/block/sdg     flags=fsflags=utf8;display="OTG USB Storage";storage;wipeingui;removable
