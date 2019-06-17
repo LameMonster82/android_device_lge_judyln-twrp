@@ -1,7 +1,10 @@
 ro.display.series=LG G7 ThinQ
 ro.product.board=sdm845
+ro.hardware.keystore=sdm845
 ro.board.platform=sdm845
 ro.build.version.release=9
 ro.build.version.sdk=28
 ro.crypto.type=block
+
+persist.vendor.lge.service.crash.enable=true
 
