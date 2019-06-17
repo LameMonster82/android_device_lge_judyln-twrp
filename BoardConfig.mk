@@ -47,9 +47,14 @@ TARGET_USES_UEFI := true
 # Kernel
 BOARD_KERNEL_CMDLINE := androidboot.selinux=permissive androidboot.hardware=judyln androidboot.console=ttyMSM0 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 service_locator.enable=1 swiotlb=2048 androidboot.configfs=true androidboot.usbcontroller=a600000.dwc3 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7
 BOARD_KERNEL_CMDLINE += skip_override androidboot.fastboot=1
-BOARD_KERNEL_BASE := 0x00000000
+BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 BOARD_KERNEL_PAGESIZE := 4096
-TARGET_PREBUILT_KERNEL := device/lge/judyln/prebuilt/zImage
+TARGET_KERNEL_SOURCE := kernel/lge/sdm845
+BOARD_KERNEL_BASE := 0x80000000
+BOARD_KERNEL_PAGESIZE := 4096
+TARGET_KERNEL_CONFIG := judyln_lao_com-perf_defconfig
+
+#TARGET_PREBUILT_KERNEL := device/lge/judyln/prebuilt/zImage
 
 # Platform
 TARGET_BOARD_PLATFORM := sdm845
@@ -123,13 +128,13 @@ AB_OTA_PARTITIONS += \
     dtbo 
 
 # Encryption
-#PLATFORM_SECURITY_PATCH := 2025-12-31
+#PLATFORM_SECURITY_PATCH := 2077-05-01
 TW_INCLUDE_CRYPTO := true
-TARGET_HW_DISK_ENCRYPTION := true
+#TARGET_HW_DISK_ENCRYPTION := true
 TARGET_KEYMASTER_WAIT_FOR_QSEE := true
-#TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor
-#TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
-#TW_CRYPTO_USE_SYSTEM_VOLD := qseecomd
+TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor system
+TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
+TW_CRYPTO_USE_SYSTEM_VOLD := qseecomd
 TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
 TWRP_INCLUDE_LOGCAT := true
 
