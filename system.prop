@@ -6,5 +6,5 @@ ro.build.version.release=9
 ro.build.version.sdk=28
 ro.crypto.type=block
 
-persist.vendor.lge.service.crash.enable=true
+persist.vendor.lge.service.crash.enable=false
 
