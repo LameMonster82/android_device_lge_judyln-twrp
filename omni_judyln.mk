@@ -33,6 +33,8 @@ PRODUCT_MODEL := LG G7 ThinQ
 PRODUCT_MANUFACTURER := LG
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    PRODUCT_NAME=judyln \
-    BUILD_PRODUCT=judyln \
-    TARGET_DEVICE=judyln
+		TARGET_DEVICE=judyln \
+		PRODUCT_NAME=judyln_lao_com \
+		PRIVATE_BUILD_DESC="judyln_lao_aosp-eng 9 PKQ1.181105.001 191281829b7c4 release-keys"
+
+BUILD_FINGERPRINT="lge/judyln_lao_com/judyln:9/PKQ1.181105.001/191281829b7c4:user/release-keys"
