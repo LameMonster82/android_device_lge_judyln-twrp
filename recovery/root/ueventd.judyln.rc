@@ -26,6 +26,9 @@
 #
 
 # the DIAG device node is not world writable/readable.
+
+firmware_directories /etc/firmware/ /odm/firmware/ /vendor/firmware/ /firmware/image/
+
 /dev/diag                 0660   system     oem_2901
 
 /dev/genlock              0666   system     system
