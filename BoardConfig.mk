@@ -125,10 +125,10 @@ AB_OTA_PARTITIONS += \
     system \
     vendor \
     vbmeta \
-    dtbo 
+    dtbo
 
 # Encryption
-#PLATFORM_SECURITY_PATCH := 2077-05-01
+PLATFORM_SECURITY_PATCH := 2019-05-01
 TW_INCLUDE_CRYPTO := true
 #TARGET_HW_DISK_ENCRYPTION := true
 TARGET_KEYMASTER_WAIT_FOR_QSEE := true
