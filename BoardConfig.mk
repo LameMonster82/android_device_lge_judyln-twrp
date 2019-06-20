@@ -49,12 +49,12 @@ BOARD_KERNEL_CMDLINE := androidboot.selinux=permissive androidboot.hardware=judy
 BOARD_KERNEL_CMDLINE += skip_override androidboot.fastboot=1
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 BOARD_KERNEL_PAGESIZE := 4096
-TARGET_KERNEL_SOURCE := kernel/lge/sdm845
+#TARGET_KERNEL_SOURCE := kernel/lge/sdm845
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_PAGESIZE := 4096
-TARGET_KERNEL_CONFIG := judyln_lao_com-perf_defconfig
+#TARGET_KERNEL_CONFIG := judyln_lao_com-perf_defconfig
 
-#TARGET_PREBUILT_KERNEL := device/lge/judyln/prebuilt/zImage
+TARGET_PREBUILT_KERNEL := device/lge/judyln/prebuilt/zImage
 
 # Platform
 TARGET_BOARD_PLATFORM := sdm845
