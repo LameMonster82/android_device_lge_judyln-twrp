@@ -108,7 +108,7 @@ TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_MAX_BRIGHTNESS := 255
 TW_DEFAULT_BRIGHTNESS := 130
 TW_THEME := portrait_hdpi
-TARGET_RECOVERY_DEVICE_MODULES += android.hardware.boot@1.0 qseecomd ven_keymaster-3-0
+TARGET_RECOVERY_DEVICE_MODULES += android.hardware.boot@1.0 qseecomd
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file
 TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
 TW_NO_SCREEN_BLANK := true
@@ -131,15 +131,15 @@ AB_OTA_PARTITIONS += \
 # Encryption
 #PLATFORM_SECURITY_PATCH := 2019-05-01
 TW_INCLUDE_CRYPTO := true
-#TARGET_HW_DISK_ENCRYPTION := true
+TARGET_HW_DISK_ENCRYPTION := true
 TARGET_KEYMASTER_WAIT_FOR_QSEE := true
-TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor system
-TW_CRYPTO_USE_SYSTEM_VOLD := \
-		qseecomd \
-		lgkm-hal-1-0
+#TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor system
+#TW_CRYPTO_USE_SYSTEM_VOLD := \
+#		qseecomd \
+#		lgkm-hal-1-0
 
 #TW_CRYPTO_USE_SYSTEM_VOLD := true
-TW_CRYPTO_SYSTEM_VOLD_DEBUG := /sbin/strace
+#TW_CRYPTO_SYSTEM_VOLD_DEBUG := /sbin/strace
 TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
 TWRP_INCLUDE_LOGCAT := true
 
