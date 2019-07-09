@@ -49,12 +49,13 @@ BOARD_KERNEL_CMDLINE := androidboot.selinux=permissive androidboot.hardware=judy
 BOARD_KERNEL_CMDLINE += skip_override androidboot.fastboot=1
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 BOARD_KERNEL_PAGESIZE := 4096
-#TARGET_KERNEL_SOURCE := kernel/lge/sdm845
+TARGET_KERNEL_SOURCE := kernel/lge/sdm845
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_PAGESIZE := 4096
 #TARGET_KERNEL_CONFIG := judyln_lao_com-perf_defconfig
 
 TARGET_PREBUILT_KERNEL := device/lge/judyln/prebuilt/zImage
+TARGET_DEVICE_KERNEL_HEADERS := device/lge/judyln/kernel-headers
 
 # Platform
 TARGET_BOARD_PLATFORM := sdm845
@@ -107,7 +108,7 @@ TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_MAX_BRIGHTNESS := 255
 TW_DEFAULT_BRIGHTNESS := 130
 TW_THEME := portrait_hdpi
-TARGET_RECOVERY_DEVICE_MODULES += android.hardware.boot@1.0 qseecomd android.hardware.keymaster@3.0-service-qti android.hardware.keymaster@4.0-service-qti
+TARGET_RECOVERY_DEVICE_MODULES += android.hardware.boot@1.0 qseecomd ven_keymaster-3-0
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file
 TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
 TW_NO_SCREEN_BLANK := true
@@ -133,8 +134,12 @@ TW_INCLUDE_CRYPTO := true
 #TARGET_HW_DISK_ENCRYPTION := true
 TARGET_KEYMASTER_WAIT_FOR_QSEE := true
 TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor system
-TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
-TW_CRYPTO_USE_SYSTEM_VOLD := qseecomd
+TW_CRYPTO_USE_SYSTEM_VOLD := \
+		qseecomd \
+		lgkm-hal-1-0
+
+#TW_CRYPTO_USE_SYSTEM_VOLD := true
+TW_CRYPTO_SYSTEM_VOLD_DEBUG := /sbin/strace
 TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
 TWRP_INCLUDE_LOGCAT := true
 
