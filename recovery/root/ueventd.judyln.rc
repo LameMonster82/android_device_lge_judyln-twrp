@@ -153,6 +153,7 @@ firmware_directories /etc/firmware/ /odm/firmware/ /vendor/firmware/ /firmware/i
 /dev/msm_vidc_dec_sec     0660   system     audio
 /dev/msm_vidc_enc         0660   system     audio
 /dev/msm_rotator          0660   system     system
+# Make HW RNG readable by group system to let EntropyMixer read it.
 /dev/hw_random            0440   root       system
 /dev/sdsprpc-smd          0660   system     system
 
