@@ -35,7 +35,7 @@ extern "C" {
 #endif
 #include <errno.h>
 #define LOG_TAG "bootcontrolhal"
-#include <cutils/log.h>
+#include <log/log.h>
 #include <hardware/boot_control.h>
 #include <stdio.h>
 #include <string.h>
@@ -47,12 +47,10 @@ extern "C" {
 #include <limits.h>
 #include <cutils/properties.h>
 #include "gpt-utils.h"
-
 #define BOOTDEV_DIR "/dev/block/bootdevice/by-name"
-#define BOOT_IMG_PTN_NAME "boot"
+#define BOOT_IMG_PTN_NAME "boot_"
 #define LUN_NAME_END_LOC 14
 #define BOOT_SLOT_PROP "ro.boot.slot_suffix"
-
 #define SLOT_ACTIVE 1
 #define SLOT_INACTIVE 2
 #define UPDATE_SLOT(pentry, guid, slot_state) ({ \
@@ -63,19 +61,16 @@ extern "C" {
 		*(pentry + AB_FLAG_OFFSET)  = (*(pentry + AB_FLAG_OFFSET)& \
 			~AB_PARTITION_ATTR_SLOT_ACTIVE); \
 		})
-
 using namespace std;
 const char *slot_suffix_arr[] = {
 	AB_SLOT_A_SUFFIX,
 	AB_SLOT_B_SUFFIX,
 	NULL};
-
 enum part_attr_type {
 	ATTR_SLOT_ACTIVE = 0,
 	ATTR_BOOT_SUCCESSFUL,
 	ATTR_UNBOOTABLE,
 };
-
 void boot_control_init(struct boot_control_module *module)
 {
 	if (!module) {
@@ -84,7 +79,6 @@ void boot_control_init(struct boot_control_module *module)
 	}
 	return;
 }
-
 //Get the value of one of the attribute fields for a partition.
 static int get_partition_attribute(char *partname,
 		enum part_attr_type part_attr)
@@ -126,7 +120,6 @@ error:
 		gpt_disk_free(disk);
 	return retval;
 }
-
 //Set a particular attribute for all the partitions in a
 //slot
 static int update_slot_attribute(const char *slot,
@@ -246,7 +239,6 @@ error:
 		gpt_disk_free(disk);
 	return -1;
 }
-
 unsigned get_number_slots(struct boot_control_module *module)
 {
 	struct dirent *de = NULL;
@@ -266,6 +258,8 @@ unsigned get_number_slots(struct boot_control_module *module)
 	while ((de = readdir(dir_bootdev))) {
 		if (de->d_name[0] == '.')
 			continue;
+		static_assert(AB_SLOT_A_SUFFIX[0] == '_', "Breaking change to slot A suffix");
+		static_assert(AB_SLOT_B_SUFFIX[0] == '_', "Breaking change to slot B suffix");
 		if (!strncmp(de->d_name, BOOT_IMG_PTN_NAME,
 					strlen(BOOT_IMG_PTN_NAME)))
 			slot_count++;
@@ -277,7 +271,6 @@ error:
 		closedir(dir_bootdev);
 	return 0;
 }
-
 unsigned get_current_slot(struct boot_control_module *module)
 {
 	uint32_t num_slots = 0;
@@ -312,7 +305,6 @@ error:
 	//are just going to return the default slot.
 	return 0;
 }
-
 static int boot_control_check_slot_sanity(struct boot_control_module *module,
 		unsigned slot)
 {
@@ -324,9 +316,7 @@ static int boot_control_check_slot_sanity(struct boot_control_module *module,
 		return -1;
 	}
 	return 0;
-
 }
-
 int mark_boot_successful(struct boot_control_module *module)
 {
 	unsigned cur_slot = 0;
@@ -344,7 +334,6 @@ error:
 	ALOGE("%s: Failed to mark boot successful", __func__);
 	return -1;
 }
-
 const char *get_suffix(struct boot_control_module *module, unsigned slot)
 {
 	if (boot_control_check_slot_sanity(module, slot) != 0)
@@ -352,8 +341,6 @@ const char *get_suffix(struct boot_control_module *module, unsigned slot)
 	else
 		return slot_suffix_arr[slot];
 }
-
-
 //Return a gpt disk structure representing the disk that holds
 //partition.
 static struct gpt_disk* boot_ctl_get_disk_info(char *partition)
@@ -378,7 +365,6 @@ error:
 		gpt_disk_free(disk);
 	return NULL;
 }
-
 //The argument here is a vector of partition names(including the slot suffix)
 //that lie on a single disk
 static int boot_ctl_set_active_slot_for_partitions(vector<string> part_list,
@@ -398,7 +384,6 @@ static int boot_ctl_set_active_slot_for_partitions(vector<string> part_list,
 	uint8_t *pentryB_bak = NULL;
 	struct stat st;
 	vector<string>::iterator partition_iterator;
-
 	for (partition_iterator = part_list.begin();
 			partition_iterator != part_list.end();
 			partition_iterator++) {
@@ -464,8 +449,7 @@ static int boot_ctl_set_active_slot_for_partitions(vector<string> part_list,
 			memcpy((void*)inactive_guid, (const void*)pentryA,
 					TYPE_GUID_SIZE);
 		} else {
-			ALOGE("Both A & B for %s are inactive..Aborting",
-					prefix.c_str());
+			ALOGE("Both A & B are inactive..Aborting");
 			goto error;
 		}
 		if (!strncmp(slot_suffix_arr[slot], AB_SLOT_A_SUFFIX,
@@ -510,13 +494,11 @@ static int boot_ctl_set_active_slot_for_partitions(vector<string> part_list,
 		gpt_disk_free(disk);
 	}
 	return 0;
-
 error:
 	if (disk)
 		gpt_disk_free(disk);
 	return -1;
 }
-
 int set_active_boot_slot(struct boot_control_module *module, unsigned slot)
 {
 	map<string, vector<string>> ptn_map;
@@ -527,7 +509,6 @@ int set_active_boot_slot(struct boot_control_module *module, unsigned slot)
 	int is_ufs = gpt_utils_is_ufs_device();
 	map<string, vector<string>>::iterator map_iter;
 	vector<string>::iterator string_iter;
-
 	if (boot_control_check_slot_sanity(module, slot)) {
 		ALOGE("%s: Bad arguments", __func__);
 		goto error;
@@ -537,20 +518,13 @@ int set_active_boot_slot(struct boot_control_module *module, unsigned slot)
 	//actual names. To do this we append the slot suffix to every member
 	//in the list.
 	for (i = 0; i < ARRAY_SIZE(ptn_list); i++) {
-		//XBL & XBL_CFG are handled differrently for ufs devices so
-		//ignore them
-		if (is_ufs && (!strncmp(ptn_list[i],
-						PTN_XBL,
-						strlen(PTN_XBL))
-					|| !strncmp(ptn_list[i],
-						PTN_XBL_CFG,
-						strlen(PTN_XBL_CFG))))
+		//XBL is handled differrently for ufs devices so ignore it
+		if (is_ufs && !strncmp(ptn_list[i], PTN_XBL, strlen(PTN_XBL)))
 				continue;
 		//The partition list will be the list of _a partitions
 		string cur_ptn = ptn_list[i];
 		cur_ptn.append(AB_SLOT_A_SUFFIX);
 		ptn_vec.push_back(cur_ptn);
-
 	}
 	//The partition map gives us info in the following format:
 	// [path_to_block_device_1]--><partitions on device 1>
@@ -567,9 +541,8 @@ int set_active_boot_slot(struct boot_control_module *module, unsigned slot)
 	for (map_iter = ptn_map.begin(); map_iter != ptn_map.end(); map_iter++){
 		if (map_iter->second.size() < 1)
 			continue;
-		if (boot_ctl_set_active_slot_for_partitions(map_iter->second,
-					slot)) {
-			ALOGE("%s: Failed to set active slot", __func__);
+		if (boot_ctl_set_active_slot_for_partitions(map_iter->second, slot)) {
+			ALOGE("%s: Failed to set active slot for partitions ", __func__);;
 			goto error;
 		}
 	}
@@ -597,7 +570,6 @@ int set_active_boot_slot(struct boot_control_module *module, unsigned slot)
 error:
 	return -1;
 }
-
 int set_slot_as_unbootable(struct boot_control_module *module, unsigned slot)
 {
 	if (boot_control_check_slot_sanity(module, slot) != 0) {
@@ -613,12 +585,10 @@ error:
 	ALOGE("%s: Failed to mark slot unbootable", __func__);
 	return -1;
 }
-
 int is_slot_bootable(struct boot_control_module *module, unsigned slot)
 {
 	int attr = 0;
 	char bootPartition[MAX_GPT_NAME_SIZE + 1] = {0};
-
 	if (boot_control_check_slot_sanity(module, slot) != 0) {
 		ALOGE("%s: Argument check failed", __func__);
 		goto error;
@@ -632,12 +602,10 @@ int is_slot_bootable(struct boot_control_module *module, unsigned slot)
 error:
 	return -1;
 }
-
 int is_slot_marked_successful(struct boot_control_module *module, unsigned slot)
 {
 	int attr = 0;
 	char bootPartition[MAX_GPT_NAME_SIZE + 1] = {0};
-
 	if (boot_control_check_slot_sanity(module, slot) != 0) {
 		ALOGE("%s: Argument check failed", __func__);
 		goto error;
@@ -651,11 +619,9 @@ int is_slot_marked_successful(struct boot_control_module *module, unsigned slot)
 error:
 	return -1;
 }
-
 static hw_module_methods_t boot_control_module_methods = {
 	.open = NULL,
 };
-
 boot_control_module_t HAL_MODULE_INFO_SYM = {
 	.common = {
 		.tag = HARDWARE_MODULE_TAG,
