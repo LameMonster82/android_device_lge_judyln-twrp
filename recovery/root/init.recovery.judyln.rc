@@ -35,10 +35,12 @@ on boot
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
 
+on property:ro.boot.vendor.lge.sim_num=2
+    setprop persist.radio.multisim.config dsds
+
 on post-fs
     chown system system /persist-lg
     chmod 0771 /persist-lg
 
 on post-fs-data
     setprop vold.post_fs_data_done 1
-    start qcom-post-boot
