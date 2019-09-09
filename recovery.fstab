@@ -28,7 +28,7 @@
 #device         mount point      fstype        [device2] [length=]
 
 /dev/block/bootdevice/by-name/system       /               ext4    ro,barrier=1                                                    wait,slotselect,avb
-/dev/block/bootdevice/by-name/userdata     /data           ext4    noatime,nosuid,nodev,discard                                    wait,check,encryptable=/dev/block/bootdevice/by-name/encrypt
+/dev/block/bootdevice/by-name/userdata     /data           f2fs    noatime,nosuid,nodev,discard,fsync_mode=nobarrier               wait,check,encryptable=/dev/block/bootdevice/by-name/encrypt,quota,reservedsize=128M
 /dev/block/mmcblk0p1                       /sdcard         vfat    nosuid,nodev                                                    wait
 /dev/block/bootdevice/by-name/misc         /misc           emmc    defaults                                                        defaults
 /dev/block/bootdevice/by-name/modem        /vendor/firmware_mnt       vfat    ro,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:firmware_file:s0 wait,slotselect
