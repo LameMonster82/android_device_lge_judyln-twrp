@@ -143,18 +143,14 @@ AB_OTA_PARTITIONS += \
 
 # Encryption
 #PLATFORM_SECURITY_PATCH := 2019-05-01
-TW_INCLUDE_CRYPTO := true
-TARGET_HW_DISK_ENCRYPTION := true
-TARGET_KEYMASTER_WAIT_FOR_QSEE := true
-#TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor system
-#TW_CRYPTO_USE_SYSTEM_VOLD := \
-#		qseecomd \
-#		lgkm-hal-1-0
-
-#TW_CRYPTO_USE_SYSTEM_VOLD := true
-#TW_CRYPTO_SYSTEM_VOLD_DEBUG := /sbin/strace
-TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
+#TW_INCLUDE_CRYPTO := true
+#TARGET_HW_DISK_ENCRYPTION := true
+#TARGET_KEYMASTER_WAIT_FOR_QSEE := true
+#TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
+#TW_CRYPTO_USE_SYSTEM_VOLD := qseecomd ven_keymaster-3-0-qti
+#TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor firmware
 TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := true
 
 # Extras
 BOARD_SUPPRESS_SECURE_ERASE := true
