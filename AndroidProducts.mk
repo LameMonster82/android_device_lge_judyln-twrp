@@ -16,3 +16,7 @@
 
 PRODUCT_MAKEFILES := \
     $(LOCAL_DIR)/omni_judyln.mk
+
+COMMON_LUNCH_CHOICES := \
+    omni_judyln-userdebug \
+    omni_judyln-eng
