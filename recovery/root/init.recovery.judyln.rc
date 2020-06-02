@@ -1,46 +1,11 @@
-on init
-    chmod 0660 /dev/qseecom
-    chown system drmrpc /dev/qseecom
-    chmod 0664 /dev/ion
-    chown system system /dev/ion
-
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
 
-service prepdecrypt /sbin/prepdecrypt.sh
-    oneshot
+on init
+    start keymaster-3-0
+
+service keymaster-3-0 /sbin/android.hardware.keymaster@3.0-service-qti
+    class early_hal
     user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
-
-service keystore /sbin/keystore /data/misc/keystore
-    class main
-    user root
-    group keystore drmrpc readproc log root
-    writepid /dev/cpuset/foreground/tasks
-
-on property:ro.crypto.state=encrypted
-	#start ven_qseecomd
-  #start lgkm-hal-1-0
-  #start ven_keymaster-3-0
-  start keystore
-
-on boot
-    start prepdecrypt
-    setprop sys.usb.config adb
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
-
-on property:ro.boot.vendor.lge.sim_num=2
-    setprop persist.radio.multisim.config dsds
-
-on post-fs
-    chown system system /persist-lg
-    chmod 0771 /persist-lg
-
-on post-fs-data
-    setprop vold.post_fs_data_done 1
+    group root drmrpc
