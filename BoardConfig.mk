@@ -23,7 +23,9 @@
 # *not* include it on all devices, so it is safe even with hardware-specific
 # components.
 
-# Architecture
+DEVICE_PATH := device/lge/judyln
+
+# Platform
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
@@ -65,8 +67,8 @@ BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 #TARGET_KERNEL_SOURCE := kernel/lge/sdm845
 #TARGET_KERNEL_CLANG_COMPILE := true
 
-TARGET_PREBUILT_KERNEL := device/lge/judyln/prebuilt/zImage
-TARGET_DEVICE_KERNEL_HEADERS := device/lge/judyln/kernel-headers
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/zImage
+TARGET_BOARD_KERNEL_HEADERS := $(DEVICE_PATH)/kernel-headers
 
 # Platform
 TARGET_BOARD_PLATFORM := sdm845
@@ -93,8 +95,8 @@ BOARD_USES_RECOVERY_AS_BOOT := true
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 
 # Partitions (listed in the file) to be wiped under recovery.
-TARGET_RECOVERY_WIPE := device/lge/judyln/recovery.wipe
-TARGET_RECOVERY_FSTAB := device/lge/judyln/recovery.fstab
+TARGET_RECOVERY_WIPE := $(DEVICE_PATH)/recovery.wipe
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
 
 
 # Workaround for error copying vendor files to recovery ramdisk
@@ -158,7 +160,7 @@ TWRP_INCLUDE_LOGCAT := true
 BOARD_SUPPRESS_SECURE_ERASE := true
 TW_USE_LEDS_HAPTICS := true
 USE_RECOVERY_INSTALLER := true
-RECOVERY_INSTALLER_PATH := device/lge/judyln/installer
+RECOVERY_INSTALLER_PATH := $(DEVICE_PATH)/installer
 TW_EXCLUDE_TWRPAPP := true
 TW_INCLUDE_REPACKTOOLS := true
 TW_Y_OFFSET := 92
