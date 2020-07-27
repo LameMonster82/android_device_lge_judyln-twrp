@@ -59,6 +59,7 @@ BOARD_KERNEL_CMDLINE += androidboot.usbcontroller=a600000.dwc3
 BOARD_KERNEL_CMDLINE += loop.max_part=7
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 BOARD_KERNEL_CMDLINE += androidboot.hardware=judyln
+BOARD_KERNEL_CMDLINE += disable_skip_initramfs
 TARGET_KERNEL_ARCH := arm64
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 4096
@@ -66,9 +67,12 @@ BOARD_KERNEL_SEPARATED_DTBO := true
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 #TARGET_KERNEL_SOURCE := kernel/lge/sdm845
 #TARGET_KERNEL_CLANG_COMPILE := true
+#TARGET_KERNEL_CONFIG := judyln_lao_com-perf_defconfig
+
 
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/zImage
 TARGET_BOARD_KERNEL_HEADERS := $(DEVICE_PATH)/kernel-headers
+BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
 
 # Platform
 TARGET_BOARD_PLATFORM := sdm845
@@ -142,17 +146,13 @@ AB_OTA_PARTITIONS += \
     dtbo
 
 # Encryption
-#PLATFORM_SECURITY_PATCH := 2019-05-01
-#TW_INCLUDE_CRYPTO := true
-#TARGET_HW_DISK_ENCRYPTION := true
-#TARGET_KEYMASTER_WAIT_FOR_QSEE := true
-#TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
-#TW_CRYPTO_USE_SYSTEM_VOLD := qseecomd ven_keymaster-3-0-qti
-#TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor firmware
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_FBE := true
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
 
 # Extras
+BOARD_INCLUDE_RECOVERY_DTBO := true
 BOARD_SUPPRESS_SECURE_ERASE := true
 TW_USE_LEDS_HAPTICS := true
 USE_RECOVERY_INSTALLER := true
@@ -161,3 +161,6 @@ TW_EXCLUDE_TWRPAPP := true
 TW_INCLUDE_REPACKTOOLS := true
 TW_Y_OFFSET := 92
 TW_H_OFFSET := -92
+# Hack: prevent anti rollback
+PLATFORM_SECURITY_PATCH := 2099-12-31
+PLATFORM_VERSION := 16.1.0
