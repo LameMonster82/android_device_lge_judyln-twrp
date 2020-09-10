@@ -51,7 +51,8 @@ TARGET_NO_BOOTLOADER := true
 TARGET_USES_UEFI := true
 
 # Kernel
-BOARD_KERNEL_CMDLINE := video=vfb:640x400,bpp=32,memsize=3072000
+BOARD_BOOTIMG_HEADER_VERSION := 1
+BOARD_KERNEL_CMDLINE += video=vfb:640x400,bpp=32,memsize=3072000
 BOARD_KERNEL_CMDLINE += msm_rtb.filter=0x237 ehci-hcd.park=3
 BOARD_KERNEL_CMDLINE += lpm_levels.sleep_disabled=1 service_locator.enable=1
 BOARD_KERNEL_CMDLINE += swiotlb=2048 androidboot.configfs=true
@@ -65,14 +66,11 @@ BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_SEPARATED_DTBO := true
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
-#TARGET_KERNEL_SOURCE := kernel/lge/sdm845
-#TARGET_KERNEL_CLANG_COMPILE := true
-#TARGET_KERNEL_CONFIG := judyln_lao_com-perf_defconfig
 
-
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/zImage
-TARGET_BOARD_KERNEL_HEADERS := $(DEVICE_PATH)/kernel-headers
-BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
+TARGET_PREBUILT_DTBO := device/lge/judypn/prebuilt/dtbo.img
+BOARD_MKBOOTIMG_ARGS := --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
+BOARD_MKBOOTIMG_ARGS += --recovery_dtbo $(TARGET_PREBUILT_DTBO)
+TARGET_PREBUILT_KERNEL := device/lge/judyln/prebuilt/Image.gz-dtb
 
 # Platform
 TARGET_BOARD_PLATFORM := sdm845
@@ -144,6 +142,9 @@ AB_OTA_PARTITIONS += \
     vendor \
     vbmeta \
     dtbo
+
+# We can use the factory reset button combo to enter recovery safely
+TW_IGNORE_MISC_WIPE_DATA := true
 
 # Encryption
 TW_INCLUDE_CRYPTO := true
