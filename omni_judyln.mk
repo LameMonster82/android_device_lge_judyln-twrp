@@ -17,7 +17,8 @@
 # Release name
 PRODUCT_RELEASE_NAME := judyln
 
-$(call inherit-product, build/target/product/embedded.mk)
+$(call inherit-product, build/target/product/core_64_bit.mk)
+$(call inherit-product, build/target/product/aosp_base.mk)
 
 # Inherit from our custom product configuration
 $(call inherit-product, vendor/omni/config/common.mk)
@@ -35,6 +36,6 @@ PRODUCT_MANUFACTURER := LG
 PRODUCT_BUILD_PROP_OVERRIDES += \
 		TARGET_DEVICE=judyln \
 		PRODUCT_NAME=judyln_lao_com \
-		PRIVATE_BUILD_DESC="judyln_lao_aosp-eng 9 PKQ1.181105.001 191281829b7c4 release-keys"
+		PRIVATE_BUILD_DESC="judyln_lao_com-user 10 QKQ1.191222.002 2032918019cf0 release-keys"
 
-BUILD_FINGERPRINT="lge/judyln_lao_com/judyln:9/PKQ1.181105.001/191281829b7c4:user/release-keys"
+BUILD_FINGERPRINT := "lge/judyln_lao_com/judyln:10/QKQ1.191222.002/2032918019cf0:user/release-keys"
