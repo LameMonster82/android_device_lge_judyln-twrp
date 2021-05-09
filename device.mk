@@ -6,7 +6,7 @@ PRODUCT_PLATFORM := sdm845
 
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH)/bootctrl \
-    $(LOCAL_PATH)/kernel-headers
+    $(LOCAL_PATH)/gpt-utils
 
 # A/B support
 PRODUCT_PACKAGES += \
