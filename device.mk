@@ -23,17 +23,25 @@ PRODUCT_HOST_PACKAGES += \
 PRODUCT_PACKAGES_DEBUG += \
     update_engine_client
 
-# Enable update engine sideloading by including the static version of the
-# boot_control HAL and its dependencies.
-PRODUCT_STATIC_BOOT_CONTROL_HAL := \
-    bootctrl.$(PRODUCT_PLATFORM) \
-    libgptutils \
-    libz \
-    libcutils
-
-
 # Boot control HAL
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.0-impl \
     android.hardware.boot@1.0-service \
-    hwservicemanager
+    android.hardware.boot@1.0-impl-wrapper.recovery \
+    android.hardware.boot@1.0-impl-wrapper \
+    android.hardware.boot@1.0-impl.recovery \
+    bootctrl.$(PRODUCT_PLATFORM) \
+    bootctrl.$(PRODUCT_PLATFORM).recovery
+
+
+# Encryption
+PRODUCT_PACKAGES += \
+    resetprop \
+    strace \
+    crash_dump \
+    init.recovery.vold_decrypt.rc \
+    vdc_pie
+
+# But why
+PRODUCT_PACKAGES += \
+    recovery

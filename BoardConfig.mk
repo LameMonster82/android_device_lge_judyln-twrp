@@ -147,15 +147,25 @@ AB_OTA_PARTITIONS += \
     dtbo
 
 # Encryption
-#PLATFORM_SECURITY_PATCH := 2019-05-01
-#TW_INCLUDE_CRYPTO := true
-#TARGET_HW_DISK_ENCRYPTION := true
-#TARGET_KEYMASTER_WAIT_FOR_QSEE := true
-#TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
-#TW_CRYPTO_USE_SYSTEM_VOLD := qseecomd ven_keymaster-3-0-qti
-#TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor firmware
+TARGET_HW_DISK_ENCRYPTION := true
+TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
+TARGET_USE_UFS_ICE := true
+TARGET_HW_DISK_ENCRYPTION := true
+LEGACY_HW_DISK_ENCRYPTION := true
+TW_CRYPTO_USE_SYSTEM_VOLD := hwservicemanager servicemanager qseecomd keymaster-3-0-qti gatekeeper-1-0-qti
+TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
+TW_CRYPTO_SYSTEM_VOLD_MOUNT := vendor firmware persist-lg system_root
+TARGET_KEYMASTER_WAIT_FOR_QSEE := true
+PLATFORM_VERSION := 16.1.0
+PLATFORM_SECURITY_PATCH := 2025-12-31
+VENDOR_SECURITY_PATCH := 2025-12-31
+
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
+TARGET_RECOVERY_DEVICE_MODULES += debuggerd
+TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_OUT_EXECUTABLES)/debuggerd
 
 # Extras
 BOARD_SUPPRESS_SECURE_ERASE := true

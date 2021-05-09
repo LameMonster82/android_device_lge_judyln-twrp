@@ -1,11 +1,23 @@
+import /init.recovery.vold_decrypt.qseecomd.rc
+
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
+    chmod 0660 /dev/qseecom
+    chown system drmrpc /dev/qseecom
+    chmod 0664 /dev/ion
+    chown system system /dev/ion
 
-on init
-    start keymaster-3-0
+on post-fs
+    chown system system /persist-lg
+    chmod 0771 /persist-lg
+    write /dev/ipa 1
 
-service keymaster-3-0 /sbin/android.hardware.keymaster@3.0-service-qti
-    class early_hal
-    user root
-    group root drmrpc
+on post-fs-data
+    setprop vold.post_fs_data_done 1
+
+on boot
+    chown system system  /sys/class/lge_mme/mme_ctrl/mme_command
+    chmod 664  /sys/class/lge_mme/mme_ctrl/mme_command
+    chown system system  /sys/class/lge_mme/mme_ctrl/hw_test_value
+    chmod 664  /sys/class/lge_mme/mme_ctrl/hw_test_value
