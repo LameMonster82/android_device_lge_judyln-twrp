@@ -1,0 +1,8 @@
+service ven_configstore-1-0 /sbin/vendor.lge.hardware.configstore@1.0-service
+    user root
+    group root
+    setenv PATH /vendor/bin:/system_root/system/bin
+    setenv LD_LIBRARY_PATH /vendor/lib64:/system_root/system/lib64:/vendor/lib:/system_root/system/lib
+    oneshot
+    disabled
+    seclabel u:r:vold:s0

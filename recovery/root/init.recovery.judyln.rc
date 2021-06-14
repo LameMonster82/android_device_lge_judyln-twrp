@@ -32,6 +32,7 @@ on fs
     chown system drmrpc /dev/qseecom
     chmod 0664 /dev/ion
     chown system system /dev/ion
+    write /dev/ipa 1
     install_keyring
 
 on init
@@ -39,11 +40,8 @@ on init
     mkdir /system/etc
     symlink /system/etc /etc
     symlink /sbin/busybox /system/bin/sh
-    symlink /vendor/manifest.xml /system/manifest.xml
 
-    start hwservicemanager
     start prepdecrypt
-    setprop crypto.ready 1
 
 service prepdecrypt /sbin/prepdecrypt.sh
     oneshot
@@ -93,6 +91,7 @@ service gatekeeper-1-0 /sbin/android.hardware.gatekeeper@1.0-service-qti
     seclabel u:r:recovery:s0
 
 service keymaster-3-0 /sbin/android.hardware.keymaster@3.0-service-qti
+    interface android.hardware.keymaster@3.0::IKeymasterDevice default
     user root
     group root
     disabled
@@ -104,21 +103,28 @@ service keymaster-4-0 /sbin/android.hardware.keymaster@4.0-service-qti
     disabled
     seclabel u:r:recovery:s0
 
+service configstore-1-0 /sbin/vendor.lge.hardware.configstore@1.0-service
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
 on boot
     setprop sys.usb.config adb
 
-on property:crypto.ready=0
-    stop sbinqseecomd
-    stop keymaster-3-0
-    #stop keymaster-4-0
-    stop gatekeeper-1-0
-    stop servicemanager
-
 on property:crypto.ready=1
     start sbinqseecomd
+    start hwservicemanager
 
 on property:vendor.sys.listeners.registered=true
     start keymaster-3-0
     #start keymaster-4-0
     start gatekeeper-1-0
+    start configstore-1-0
     start servicemanager
+
+on property:vold.decrypt=trigger_post_fs_data
+    setprop vold.post_fs_data_done 1
+
+on property:vold.decrypt=trigger_restart_framework
+    symlink /data/media/0 /sdcard

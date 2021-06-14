@@ -39,8 +39,8 @@
 #include <inttypes.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
-#include <scsi/ufs/ioctl.h>
-#include <scsi/ufs/ufs.h>
+#include "ioctl.h"
+#include "ufs.h"
 #include <unistd.h>
 #include <linux/fs.h>
 #include <limits.h>
